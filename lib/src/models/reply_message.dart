@@ -19,6 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import 'package:chatview/src/extensions/extensions.dart';
+
 import '../values/enumaration.dart';
 
 class ReplyMessage {
@@ -58,10 +61,10 @@ class ReplyMessage {
 
   Map<String, dynamic> toJson() => {
         'message': message,
-        'replyBy': replyBy,
+        'user_id': replyBy,
         'replyTo': replyTo,
-        'message_type': messageType,
+        'type': messageType.toJson(),
         'id': messageId,
-        'voiceMessageDuration': voiceMessageDuration,
+        'voiceMessageDuration': voiceMessageDuration?.inMilliseconds,
       };
 }

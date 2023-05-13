@@ -29,7 +29,6 @@ dependencies:
   progress_indicators: ^1.0.0
   image_picker: ^0.8.7+5
   audio_waveforms: ^1.0.4
-  # For formatting time locale in message receipts
   timeago: ^3.4.0
   flutter_parsed_text: ^2.2.1
 

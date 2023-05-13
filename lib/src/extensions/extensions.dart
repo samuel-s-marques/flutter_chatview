@@ -79,8 +79,7 @@ extension ValidateString on String {
       padding: profileCirclePadding ?? const EdgeInsets.only(left: 4),
       child: CircleAvatar(
         radius: profileCircleRadius ?? 8,
-        backgroundImage:
-            NetworkImage(getChatUser(this)?.profilePhoto ?? profileImage),
+        backgroundImage: NetworkImage(getChatUser(this)?.profilePhoto ?? profileImage),
       ),
     );
   }
@@ -95,6 +94,35 @@ extension MessageTypes on MessageType {
   bool get isVoice => this == MessageType.voice;
 
   bool get isCustom => this == MessageType.custom;
+
+  String toJson() {
+    switch (this) {
+      case MessageType.text:
+        return 'text';
+      case MessageType.image:
+        return 'image';
+      case MessageType.voice:
+        return 'voice';
+      default:
+        return 'custom';
+    }
+  }
+}
+
+/// Extension on Status for transforming in JSON
+extension StatusExtension on MessageStatus {
+  String toJson() {
+    switch (this) {
+      case MessageStatus.read:
+        return 'read';
+      case MessageStatus.delivered:
+        return 'delivered';
+      case MessageStatus.undelivered:
+        return 'undelivered';
+      default:
+        return 'pending';
+    }
+  }
 }
 
 /// Extension on ConnectionState for checking specific connection.

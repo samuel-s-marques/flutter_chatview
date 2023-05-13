@@ -1,7 +1,8 @@
 ![Banner](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chat_ui/main/preview/banner.png)
 
 # ChatView
- [![chatview](https://img.shields.io/pub/v/chatview?label=chatview)](https://pub.dev/packages/chatview)
+
+[![chatview](https://img.shields.io/pub/v/chatview?label=chatview)](https://pub.dev/packages/chatview)
 
 A Flutter package that allows you to integrate Chat View with highly customization options such as one on one
 chat, group chat, message reactions, reply messages, link preview and configurations for overall view.
@@ -13,7 +14,7 @@ visit [Chat View Example](https://chat-view-8f1b5.web.app/#/).
 
 ![The example app running in iOS](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chat_ui/main/preview/chatview.gif)
 
-## Installing   
+## Installing
 
 1.  Add dependency to `pubspec.yaml`
 
@@ -21,13 +22,17 @@ visit [Chat View Example](https://chat-view-8f1b5.web.app/#/).
 dependencies:
   chatview: <latest-version>
 ```
-*Get the latest version in the 'Installing' tab on [pub.dev](https://pub.dev/packages/chatview)*
+
+_Get the latest version in the 'Installing' tab on [pub.dev](https://pub.dev/packages/chatview)_
 
 2.  Import the package
+
 ```dart
 import 'package:chatview/chatview.dart';
 ```
+
 3. Adding a chat controller.
+
 ```dart
 final chatController = ChatController(
   initialMessageList: messageList,
@@ -37,6 +42,7 @@ final chatController = ChatController(
 ```
 
 4. Adding a `ChatView` widget.
+
 ```dart
 ChatView(
   currentUser: ChatUser(id: '1', name: 'Flutter'),
@@ -47,6 +53,7 @@ ChatView(
 ```
 
 5. Adding a messageList with `Message` class.
+
 ```dart
 List<Message> messageList = [
   Message(
@@ -65,6 +72,7 @@ List<Message> messageList = [
 ```
 
 6. Adding a `onSendTap`.
+
 ```dart
 void onSendTap(String message, ReplyMessage replyMessage, Message messageType){
   final message = Message(
@@ -83,19 +91,20 @@ Note: you can evaluate message type from `messageType` parameter, based on that 
 
 ## Messages types compability
 
-|Message Types   | Android | iOS | MacOS | Web | Linux | Windows |
-| :-----:        | :-----: | :-: | :---: | :-: | :---: | :-----: |
-|Text messages   |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
-|Image messages  |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
-|Voice messages  |   ✔️    | ✔️  |  ❌   | ❌  |  ❌  |   ❌  |
-|Custom messages |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
-
+|  Message Types  | Android | iOS | MacOS | Web | Linux | Windows |
+| :-------------: | :-----: | :-: | :---: | :-: | :---: | :-----: |
+|  Text messages  |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
+| Image messages  |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
+| Voice messages  |   ✔️    | ✔️  |  ❌   | ❌  |  ❌   |   ❌    |
+| Custom messages |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
 
 ## Platform specific configuration
 
 ### For image Picker
+
 #### iOS
-* Add the following keys to your _Info.plist_ file, located in `<project root>/ios/Runner/Info.plist`:
+
+- Add the following keys to your _Info.plist_ file, located in `<project root>/ios/Runner/Info.plist`:
 
 ```
     <key>NSCameraUsageDescription</key>
@@ -107,32 +116,40 @@ Note: you can evaluate message type from `messageType` parameter, based on that 
 ```
 
 ### For voice messages
+
 #### iOS
-* Add this two rows in `ios/Runner/Info.plist`
+
+- Add this two rows in `ios/Runner/Info.plist`
+
 ```
     <key>NSMicrophoneUsageDescription</key>
     <string>This app requires Mic permission.</string>
 ```
-* This plugin requires ios 10.0 or higher. So add this line in `Podfile`
+
+- This plugin requires ios 10.0 or higher. So add this line in `Podfile`
+
 ```
     platform :ios, '10.0'
 ```
 
 #### Android
-* Change the minimum Android sdk version to 21 (or higher) in your android/app/build.gradle file.
+
+- Change the minimum Android sdk version to 21 (or higher) in your android/app/build.gradle file.
+
 ```
     minSdkVersion 21
 ```
 
-* Add RECORD_AUDIO permission in `AndroidManifest.xml`
+- Add RECORD_AUDIO permission in `AndroidManifest.xml`
+
 ```
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 ```
 
-
 ## Some more optional parameters
 
 1. Enable and disable specific features with `FeatureActiveConfig`.
+
 ```dart
 ChatView(
   ...
@@ -145,6 +162,7 @@ ChatView(
 ```
 
 2. Adding an appbar with `ChatViewAppBar`.
+
 ```dart
 ChatView(
   ...
@@ -161,6 +179,7 @@ ChatView(
 ```
 
 3. Adding a message list configuration with `ChatBackgroundConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -173,6 +192,7 @@ ChatView(
 ```
 
 4. Adding a send message configuration with `SendMessageConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -187,6 +207,7 @@ ChatView(
 ```
 
 5. Adding a chat bubble configuration with `ChatBubbleConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -194,9 +215,9 @@ ChatView(
     onDoubleTap: (){
        // Your code goes here
     },
-    outgoingChatBubbleConfig: ChatBubble(      // Sender's message chat bubble 
+    outgoingChatBubbleConfig: ChatBubble(      // Sender's message chat bubble
       color: Colors.blue,
-      borderRadius: const BorderRadius.only(  
+      borderRadius: const BorderRadius.only(
         topRight: Radius.circular(12),
         topLeft: Radius.circular(12),
         bottomLeft: Radius.circular(12),
@@ -216,6 +237,7 @@ ChatView(
 ```
 
 6. Adding swipe to reply configuration with `SwipeToReplyConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -225,22 +247,23 @@ ChatView(
     },
     onRightSwipe: (message, sendBy){
         // Your code goes here
-    },              
+    },
   ),
   ...
 )
 ```
 
 7. Adding messages configuration with `MessageConfiguration` class.
+
 ```dart
 ChatView(
   ...
   messageConfig: MessageConfiguration(
-    messageReactionConfig: MessageReactionConfiguration(),      // Emoji reaction configuration for single message 
+    messageReactionConfig: MessageReactionConfiguration(),      // Emoji reaction configuration for single message
     imageMessageConfig: ImageMessageConfiguration(
       onTap: (){
           // Your code goes here
-      },                          
+      },
       shareIconConfig: ShareIconConfiguration(
         onPressed: (){
            // Your code goes here
@@ -253,6 +276,7 @@ ChatView(
 ```
 
 8. Adding reaction pop-up configuration with `ReactionPopupConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -272,6 +296,7 @@ ChatView(
 ```
 
 9. Adding reply pop-up configuration with `ReplyPopupConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -295,6 +320,7 @@ ChatView(
 ```
 
 10. Adding replied message configuration with `RepliedMessageConfiguration` class.
+
 ```dart
 ChatView(
    ...
@@ -308,6 +334,7 @@ ChatView(
 ```
 
 11. For customizing typing indicators use `typeIndicatorConfig` with `TypeIndicatorConfig`.
+
 ```dart
 ChatView(
   ...
@@ -319,17 +346,29 @@ ChatView(
   ...
 )
 ```
+
 12. For showing hiding typeIndicatorwidget use `ChatController.setTypingIndicaor`, for more info see `ChatController`.
+
 ```dart
 /// use it with your [ChatController] instance.
-_chatContoller.setTypingIndicator = true; // for showing indicator
-_chatContoller.setTypingIndicator = false; // for hiding indicator
+_chatContoller.setTypingIndicator = userId; // for showing indicator userId of the user typing
+_chatContoller.setTypingIndicator = null; // for hiding indicator
 ```
 
+13. One can access userID of the typing user by
 
+```dart
 
+/// use it with your [ChatController] instance.
+debugPrint(_chatContoller.typingUserId); // It is nullable
 
-13. Adding linkpreview configuration with `LinkPreviewConfiguration` class.
+// To access current state whether is showing or hidden
+debugPrint(_chatController.showTypingIndicator);
+
+```
+
+14. Adding linkpreview configuration with `LinkPreviewConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -354,9 +393,8 @@ ChatView(
 )
 ```
 
-
-
 13. Adding pagination.
+
 ```dart
 ChatView(
   ...
@@ -370,6 +408,7 @@ ChatView(
 ```
 
 14. Add image picker icon configuration.
+
 ```dart
 ChatView(
   ...
@@ -384,6 +423,7 @@ ChatView(
 ```
 
 15. Add `ChatViewState` customisations.
+
 ```dart
 ChatView(
   ...
@@ -398,6 +438,7 @@ ChatView(
 ```
 
 16. Setting auto scroll and highlight config with `RepliedMsgAutoScrollConfig` class.
+
 ```dart
 ChatView(
     ...
@@ -410,20 +451,20 @@ ChatView(
 )
 ```
 
-17.  Callback when a user starts/stops typing in `TextFieldConfiguration`
-    
+17. Callback when a user starts/stops typing in `TextFieldConfiguration`
+
 ```dart
 ChatView(
     ...
       sendMessageConfig: SendMessageConfiguration(
-       
+
           textFieldConfig: TextFieldConfiguration(
             onMessageTyping: (status) {
                 // send composing/composed status to other client
                 // your code goes here
-            },   
+            },
 
-            
+
         /// After typing stopped, the threshold time after which the composing
         /// status to be changed to [TypeWriterStatus.typed].
         /// Default is 1 second.
@@ -435,8 +476,8 @@ ChatView(
 )
 ```
 
-18.  Passing customReceipts builder or handling stuffs related receipts see `ReceiptsWidgetConfig` in  outgoingChatBubbleConfig.
-    
+18. Passing customReceipts builder or handling stuffs related receipts see `ReceiptsWidgetConfig` in outgoingChatBubbleConfig.
+
 ```dart
 ChatView(
    ...
@@ -444,8 +485,8 @@ ChatView(
             /// Controls the visibility of message seen ago receipts default is true
             lastSeenAgoBuilderVisibility: false,
             /// Controls the visibility of the message [receiptsBuilder]
-            receiptsBuilderVisibility: false),            
-       ChatBubbleConfiguration(
+            receiptsBuilderVisibility: false),
+      chatBubbleConfig: ChatBubbleConfiguration(
           inComingChatBubbleConfig: ChatBubble(
             onMessageRead: (message) {
               /// send your message reciepts to the other client
@@ -455,28 +496,43 @@ ChatView(
           ),
           outgoingChatBubbleConfig: ChatBubble(
               receiptsWidgetConfig: ReceiptsWidgetConfig(
-                      /// custom receipts builder 
+                      /// custom receipts builder
                       receiptsBuilder: _customReceiptsBuilder,
-                      /// whether to display receipts in all 
+                      /// whether to display receipts in all
                       /// message or just at the last one just like instagram
                       showReceiptsIn: ShowReceiptsIn.lastMessage
               ),
-            ), 
-        ), 
-        
+            ),
+        ),
+
   ...
- 
+
 )
 ```
 
+19. Markdown is by default supported, to toggle it
 
+```dart
+
+  ChatView(
+   ...
+      featureActiveConfig: const FeatureActiveConfig(
+            /// Controls whether markdown is enabled or not defaults to true
+            isMarkdownSupported = true,
+            ),
+
+
+  ...
+
+)
+
+```
 
 ## How to use
 
-Check out [blog](https://medium.com/simform-engineering/chatview-a-cutting-edge-chat-ui-solution-7367b1f9d772) for better understanding and basic implementation. 
+Check out [blog](https://medium.com/simform-engineering/chatview-a-cutting-edge-chat-ui-solution-7367b1f9d772) for better understanding and basic implementation.
 
 Also, for whole example, check out the **example** app in the [example](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/tree/main/example) directory or the 'Example' tab on pub.dartlang.org for a more complete example.
-
 
 ## Main Contributors
 

@@ -2,53 +2,59 @@ import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 
 class PatternStyle {
-  const PatternStyle(
-    this.name,
-    this.from,
-    this.regExp,
-    this.replace,
+  const PatternStyle({
+    required this.name,
+    required this.from,
+    required this.regExp,
+    required this.replace,
     this.textStyle,
-  );
+  });
 
+  final String name;
   final Pattern from;
   final RegExp regExp;
   final String replace;
-  final TextStyle textStyle;
-  final String name;
+  final TextStyle? textStyle;
 
   String get pattern => regExp.pattern;
 
   static PatternStyle get bold => PatternStyle(
-        'bold',
-        RegExp('(\\*\\*|\\*)'),
-        RegExp('(\\*\\*|\\*)(.*?)(\\*\\*|\\*)'),
-        '',
-        const TextStyle(fontWeight: FontWeight.bold),
+        name: 'bold',
+        from: RegExp('(\\*\\*|\\*)'),
+        regExp: RegExp('(\\*\\*|\\*)(.*?)(\\*\\*|\\*)'),
+        replace: '',
+        textStyle: const TextStyle(fontWeight: FontWeight.bold),
       );
 
   static PatternStyle get code => PatternStyle(
-        "code",
-        '`',
-        RegExp('`(.*?)`'),
-        '',
-        TextStyle(
+        name: "code",
+        from: '`',
+        regExp: RegExp('`(.*?)`'),
+        replace: '',
+        textStyle: TextStyle(
           fontFamily: Platform.isIOS ? 'Courier' : 'monospace',
         ),
       );
 
   static PatternStyle get italic => PatternStyle(
-        'italic',
-        '_',
-        RegExp('_(.*?)_'),
-        '',
-        const TextStyle(fontStyle: FontStyle.italic),
+        name: 'italic',
+        from: '_',
+        regExp: RegExp('_(.*?)_'),
+        replace: '',
+        textStyle: const TextStyle(fontStyle: FontStyle.italic),
       );
 
   static PatternStyle get lineThrough => PatternStyle(
-        'linethrough',
-        '~',
-        RegExp('~(.*?)~'),
-        '',
-        const TextStyle(decoration: TextDecoration.lineThrough),
+        name: 'linethrough',
+        from: '~',
+        regExp: RegExp('~(.*?)~'),
+        replace: '',
+        textStyle: const TextStyle(decoration: TextDecoration.lineThrough),
+      );
+  static PatternStyle get spoiler => PatternStyle(
+        name: 'spoiler',
+        from: '||',
+        regExp: RegExp(r'\|\|(.*?)\|\|'),
+        replace: '',
       );
 }

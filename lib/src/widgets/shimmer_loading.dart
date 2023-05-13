@@ -84,11 +84,9 @@ class ShimmerState extends State<Shimmer> with SingleTickerProviderStateMixin {
 class ShimmerLoading extends StatefulWidget {
   const ShimmerLoading({
     super.key,
-    required this.isShowing,
     required this.child,
   });
 
-  final bool isShowing;
   final Widget child;
 
   @override
@@ -97,6 +95,7 @@ class ShimmerLoading extends StatefulWidget {
 
 class ShimmerLoadingState extends State<ShimmerLoading> {
   Listenable? shimmerChanges;
+  bool isShowing = true;
 
   @override
   void didChangeDependencies() {
@@ -117,14 +116,14 @@ class ShimmerLoadingState extends State<ShimmerLoading> {
   }
 
   void onShimmerChange() {
-    if (widget.isShowing) {
+    if (isShowing) {
       setState(() {});
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.isShowing) {
+    if (!isShowing) {
       return widget.child;
     }
 
@@ -139,19 +138,31 @@ class ShimmerLoadingState extends State<ShimmerLoading> {
       descendant: context.findRenderObject()! as RenderBox,
     );
 
-    return ShaderMask(
-      blendMode: BlendMode.srcATop,
-      shaderCallback: (Rect bounds) {
-        return gradient.createShader(
-          Rect.fromLTWH(
-            -offsetWithinShimmer.dx,
-            -offsetWithinShimmer.dy,
-            shimmerSize.width,
-            shimmerSize.height,
-          ),
-        );
+    return GestureDetector(
+      onTap: () {
+        if (isShowing) {
+          setState(() {
+            isShowing = false;
+          });
+        }
       },
-      child: widget.child,
+      child: ShaderMask(
+        blendMode: BlendMode.srcATop,
+        shaderCallback: (Rect bounds) {
+          return gradient.createShader(
+            Rect.fromLTWH(
+              -offsetWithinShimmer.dx,
+              -offsetWithinShimmer.dy,
+              shimmerSize.width,
+              shimmerSize.height,
+            ),
+          );
+        },
+        child: Card(
+          margin: EdgeInsets.zero,
+          child: widget.child,
+        ),
+      ),
     );
   }
 }

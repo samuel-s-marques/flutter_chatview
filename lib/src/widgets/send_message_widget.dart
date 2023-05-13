@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 import 'dart:io' if (kIsWeb) 'dart:html';
-import 'dart:ui';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chatview/chatview.dart';

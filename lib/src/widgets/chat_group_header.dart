@@ -39,8 +39,7 @@ class ChatGroupHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: groupSeparatorConfig?.padding ??
-          const EdgeInsets.symmetric(vertical: 12),
+      padding: groupSeparatorConfig?.padding ?? const EdgeInsets.symmetric(vertical: 12),
       child: Text(
         day.getDay,
         textAlign: TextAlign.center,

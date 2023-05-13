@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
+import 'package:chatview/src/extensions/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
@@ -68,10 +69,7 @@ class Message {
         key = GlobalKey(),
         _status = ValueNotifier(status),
         assert(
-          (messageType.isVoice
-              ? ((defaultTargetPlatform == TargetPlatform.iOS ||
-                  defaultTargetPlatform == TargetPlatform.android))
-              : true),
+          (messageType.isVoice ? ((defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android)) : true),
           "Voice messages are only supported with android and ios platform",
         );
 
@@ -104,12 +102,12 @@ class Message {
   Map<String, dynamic> toJson() => {
         'id': id,
         'message': message,
-        'createdAt': createdAt,
-        'sendBy': sendBy,
+        'created_at': createdAt.toUtc().toIso8601String(),
+        'user_id': sendBy,
         'reply_message': replyMessage.toJson(),
         'reaction': reaction.toJson(),
-        'message_type': messageType,
-        'voice_message_duration': voiceMessageDuration,
-        'status': status.name
+        'type': messageType.toJson(),
+        'voice_message_duration': voiceMessageDuration?.inMilliseconds,
+        'status': status.toJson(),
       };
 }

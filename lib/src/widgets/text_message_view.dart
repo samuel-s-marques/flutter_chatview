@@ -23,7 +23,9 @@ import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
+import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 
+import '../models/pattern_style.dart';
 import '../utils/constants/constants.dart';
 import 'link_preview.dart';
 import 'reaction_widget.dart';
@@ -39,6 +41,7 @@ class TextMessageView extends StatelessWidget {
     this.messageReactionConfig,
     this.highlightMessage = false,
     this.highlightColor,
+    this.featureActiveConfig,
   }) : super(key: key);
 
   /// Represents current message is sent by current user.
@@ -65,6 +68,9 @@ class TextMessageView extends StatelessWidget {
   /// Allow user to set color of highlighted message.
   final Color? highlightColor;
 
+  /// For markdown support.
+  final FeatureActiveConfig? featureActiveConfig;
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -73,35 +79,82 @@ class TextMessageView extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Container(
-          constraints: BoxConstraints(
-              maxWidth: chatBubbleMaxWidth ??
-                  MediaQuery.of(context).size.width * 0.75),
-          padding: _padding ??
-              const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 10,
-              ),
-          margin: _margin ??
-              EdgeInsets.fromLTRB(
-                  5, 0, 6, message.reaction.reactions.isNotEmpty ? 15 : 2),
-          decoration: BoxDecoration(
-            color: highlightMessage ? highlightColor : _color,
-            borderRadius: _borderRadius(textMessage),
-          ),
-          child: textMessage.isUrl
-              ? LinkPreview(
-                  linkPreviewConfig: _linkPreviewConfig,
-                  url: textMessage,
-                )
-              : Text(
-                  textMessage,
-                  style: _textStyle ??
-                      textTheme.bodyMedium!.copyWith(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
+            constraints: BoxConstraints(maxWidth: chatBubbleMaxWidth ?? MediaQuery.of(context).size.width * 0.75),
+            padding: _padding ??
+                const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
                 ),
-        ),
+            margin: _margin ?? EdgeInsets.fromLTRB(5, 0, 6, message.reaction.reactions.isNotEmpty ? 15 : 2),
+            decoration: BoxDecoration(
+              color: highlightMessage ? highlightColor : _color,
+              borderRadius: _borderRadius(textMessage),
+            ),
+            child: textMessage.isUrl
+                ? LinkPreview(
+                    linkPreviewConfig: _linkPreviewConfig,
+                    url: textMessage,
+                  )
+                : featureActiveConfig?.isMarkdownSupported == true
+                    ? ParsedText(
+                        selectable: false,
+                        text: message.message,
+                        style: _textStyle ??
+                            textTheme.bodyMedium!.copyWith(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                        parse: [
+                          MatchText(
+                            pattern: PatternStyle.bold.pattern,
+                            style: PatternStyle.bold.textStyle,
+                            renderText: ({required String str, required String pattern}) => {
+                              'display': str.replaceAll(
+                                PatternStyle.bold.from,
+                                PatternStyle.bold.replace,
+                              ),
+                            },
+                          ),
+                          MatchText(
+                            pattern: PatternStyle.italic.pattern,
+                            style: PatternStyle.italic.textStyle,
+                            renderText: ({required String str, required String pattern}) => {
+                              'display': str.replaceAll(
+                                PatternStyle.italic.from,
+                                PatternStyle.italic.replace,
+                              ),
+                            },
+                          ),
+                          MatchText(
+                            pattern: PatternStyle.lineThrough.pattern,
+                            style: (PatternStyle.lineThrough.textStyle),
+                            renderText: ({required String str, required String pattern}) => {
+                              'display': str.replaceAll(
+                                PatternStyle.lineThrough.from,
+                                PatternStyle.lineThrough.replace,
+                              ),
+                            },
+                          ),
+                          MatchText(
+                            pattern: PatternStyle.code.pattern,
+                            style: (PatternStyle.code.textStyle),
+                            renderText: ({required String str, required String pattern}) => {
+                              'display': str.replaceAll(
+                                PatternStyle.code.from,
+                                PatternStyle.code.replace,
+                              ),
+                            },
+                          ),
+                        ],
+                      )
+                    : Text(
+                        textMessage,
+                        style: _textStyle ??
+                            textTheme.bodyMedium!.copyWith(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                      )),
         if (message.reaction.reactions.isNotEmpty)
           ReactionWidget(
             key: key,
@@ -113,33 +166,18 @@ class TextMessageView extends StatelessWidget {
     );
   }
 
-  EdgeInsetsGeometry? get _padding => isMessageBySender
-      ? outgoingChatBubbleConfig?.padding
-      : inComingChatBubbleConfig?.padding;
+  EdgeInsetsGeometry? get _padding => isMessageBySender ? outgoingChatBubbleConfig?.padding : inComingChatBubbleConfig?.padding;
 
-  EdgeInsetsGeometry? get _margin => isMessageBySender
-      ? outgoingChatBubbleConfig?.margin
-      : inComingChatBubbleConfig?.margin;
+  EdgeInsetsGeometry? get _margin => isMessageBySender ? outgoingChatBubbleConfig?.margin : inComingChatBubbleConfig?.margin;
 
-  LinkPreviewConfiguration? get _linkPreviewConfig => isMessageBySender
-      ? outgoingChatBubbleConfig?.linkPreviewConfig
-      : inComingChatBubbleConfig?.linkPreviewConfig;
+  LinkPreviewConfiguration? get _linkPreviewConfig =>
+      isMessageBySender ? outgoingChatBubbleConfig?.linkPreviewConfig : inComingChatBubbleConfig?.linkPreviewConfig;
 
-  TextStyle? get _textStyle => isMessageBySender
-      ? outgoingChatBubbleConfig?.textStyle
-      : inComingChatBubbleConfig?.textStyle;
+  TextStyle? get _textStyle => isMessageBySender ? outgoingChatBubbleConfig?.textStyle : inComingChatBubbleConfig?.textStyle;
 
   BorderRadiusGeometry _borderRadius(String message) => isMessageBySender
-      ? outgoingChatBubbleConfig?.borderRadius ??
-          (message.length < 37
-              ? BorderRadius.circular(replyBorderRadius1)
-              : BorderRadius.circular(replyBorderRadius2))
-      : inComingChatBubbleConfig?.borderRadius ??
-          (message.length < 29
-              ? BorderRadius.circular(replyBorderRadius1)
-              : BorderRadius.circular(replyBorderRadius2));
+      ? outgoingChatBubbleConfig?.borderRadius ?? (message.length < 37 ? BorderRadius.circular(replyBorderRadius1) : BorderRadius.circular(replyBorderRadius2))
+      : inComingChatBubbleConfig?.borderRadius ?? (message.length < 29 ? BorderRadius.circular(replyBorderRadius1) : BorderRadius.circular(replyBorderRadius2));
 
-  Color get _color => isMessageBySender
-      ? outgoingChatBubbleConfig?.color ?? Colors.purple
-      : inComingChatBubbleConfig?.color ?? Colors.grey.shade500;
+  Color get _color => isMessageBySender ? outgoingChatBubbleConfig?.color ?? Colors.purple : inComingChatBubbleConfig?.color ?? Colors.grey.shade500;
 }

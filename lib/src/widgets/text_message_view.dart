@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/widgets/shimmer_loading.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -143,6 +144,19 @@ class TextMessageView extends StatelessWidget {
                                 PatternStyle.code.from,
                                 PatternStyle.code.replace,
                               ),
+                            },
+                          ),
+                          MatchText(
+                            pattern: PatternStyle.spoiler.pattern,
+                            renderWidget: ({required String pattern, required String text}) {
+                              return Shimmer(
+                                child: ShimmerLoading(
+                                  isShowing: true,
+                                  child: Card(
+                                    child: Text(text),
+                                  ),
+                                ),
+                              );
                             },
                           ),
                         ],

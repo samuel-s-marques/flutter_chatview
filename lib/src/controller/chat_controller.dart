@@ -31,8 +31,9 @@ class ChatController {
 
   ScrollController scrollController;
 
-  /// Allow user to show typing indicator defaults to false.
-  final ValueNotifier<bool> _showTypingIndicator = ValueNotifier(false);
+  /// Allow user to show typing indicator by setting the userId
+  /// of the user typing, defaults to null.
+  final ValueNotifier<String?> _showTypingIndicator = ValueNotifier(null);
 
   /// TypingIndicator as [ValueNotifier] for [GroupedChatList] widget's typingIndicator [ValueListenableBuilder].
   ///  Use this for listening typing indicators
@@ -40,18 +41,21 @@ class ChatController {
   ///    chatcontroller.typingIndicatorNotifier.addListener((){});
   ///  ```
   /// For more functionalities see [ValueNotifier].
-  ValueNotifier<bool> get typingIndicatorNotifier => _showTypingIndicator;
+  ValueNotifier<String?> get typingIndicatorNotifier => _showTypingIndicator;
 
   /// Getter for typingIndicator value instead of accessing [_showTypingIndicator.value]
   /// for better accessibility.
-  bool get showTypingIndicator => _showTypingIndicator.value;
+  bool get showTypingIndicator => _showTypingIndicator.value != null;
+
+  /// Getter for getting the typing user's id.
+  String? get typingUserId => _showTypingIndicator.value;
 
   /// Setter for changing values of typingIndicator
   /// ```dart
-  ///  chatContoller.setTypingIndicator = true; // for showing indicator
-  ///  chatContoller.setTypingIndicator = false; // for hiding indicator
+  ///  chatContoller.setTypingIndicator = userId; // for showing indicator
+  ///  chatContoller.setTypingIndicator = null; // for hiding indicator
   ///  ````
-  set setTypingIndicator(bool value) => _showTypingIndicator.value = value;
+  set setTypingIndicator(String? userId) => _showTypingIndicator.value = userId;
 
   /// Represents list of chat users
   List<ChatUser> chatUsers;
@@ -80,8 +84,7 @@ class ChatController {
     required String messageId,
     required String userId,
   }) {
-    final message =
-        initialMessageList.firstWhere((element) => element.id == messageId);
+    final message = initialMessageList.firstWhere((element) => element.id == messageId);
     final reactedUserIds = message.reaction.reactedUserIds;
     final indexOfMessage = initialMessageList.indexOf(message);
     final userIndex = reactedUserIds.indexOf(userId);
@@ -126,6 +129,5 @@ class ChatController {
   }
 
   /// Function for getting ChatUser object from user id
-  ChatUser getUserFromId(String userId) =>
-      chatUsers.firstWhere((element) => element.id == userId);
+  ChatUser getUserFromId(String userId) => chatUsers.firstWhere((element) => element.id == userId);
 }

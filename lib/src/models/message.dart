@@ -21,6 +21,7 @@
  */
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
+import 'package:chatview/src/utils/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
@@ -89,15 +90,16 @@ class Message {
   }
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-      id: json["id"],
-      message: json["message"],
-      createdAt: json["createdAt"],
-      sendBy: json["sendBy"],
-      replyMessage: ReplyMessage.fromJson(json["reply_message"]),
-      reaction: Reaction.fromJson(json["reaction"]),
-      messageType: json["message_type"],
-      voiceMessageDuration: json["voice_message_duration"],
-      status: json['status']);
+        id: json["id"],
+        message: json["message"],
+        createdAt: DateTime.parse(json['created_at'] as String),
+        sendBy: json["user_id"],
+        replyMessage: ReplyMessage.fromJson(json["reply_message"]),
+        reaction: Reaction.fromJson(json["reaction"]),
+        messageType: getMessageTypeFromJson(json["type"]),
+        voiceMessageDuration: json["voiceMessageDuration"] != null ? Duration(milliseconds: json["voiceMessageDuration"]) : null,
+        status: getMessageStatusFromJson(json['status']),
+      );
 
   Map<String, dynamic> toJson() => {
         'id': id,

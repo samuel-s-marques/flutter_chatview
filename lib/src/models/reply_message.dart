@@ -21,6 +21,7 @@
  */
 
 import 'package:chatview/src/extensions/extensions.dart';
+import 'package:chatview/src/utils/util.dart';
 
 import '../values/enumaration.dart';
 
@@ -52,11 +53,11 @@ class ReplyMessage {
 
   factory ReplyMessage.fromJson(Map<String, dynamic> json) => ReplyMessage(
         message: json['message'],
-        replyBy: json['replyBy'],
+        replyBy: json['user_id'],
         replyTo: json['replyTo'],
-        messageType: json["message_type"],
+        messageType: getMessageTypeFromJson(json["type"]),
         messageId: json["id"],
-        voiceMessageDuration: json["voiceMessageDuration"],
+        voiceMessageDuration: json["voiceMessageDuration"] != null ? Duration(milliseconds: json["voiceMessageDuration"]) : null,
       );
 
   Map<String, dynamic> toJson() => {

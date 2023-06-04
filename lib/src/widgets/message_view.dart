@@ -98,8 +98,7 @@ class MessageView extends StatefulWidget {
   State<MessageView> createState() => _MessageViewState();
 }
 
-class _MessageViewState extends State<MessageView>
-    with SingleTickerProviderStateMixin {
+class _MessageViewState extends State<MessageView> with SingleTickerProviderStateMixin {
   AnimationController? _animationController;
 
   MessageConfiguration? get messageConfig => widget.messageConfig;
@@ -112,13 +111,11 @@ class _MessageViewState extends State<MessageView>
     if (isLongPressEnable) {
       _animationController = AnimationController(
         vsync: this,
-        duration: widget.longPressAnimationDuration ??
-            const Duration(milliseconds: 250),
+        duration: widget.longPressAnimationDuration ?? const Duration(milliseconds: 250),
         upperBound: 0.1,
         lowerBound: 0.0,
       );
-      if (widget.message.status != MessageStatus.read &&
-          !widget.isMessageBySender) {
+      if (widget.message.status != MessageStatus.read && !widget.isMessageBySender) {
         widget.inComingChatBubbleConfig?.onMessageRead?.call(widget.message);
       }
       _animationController?.addStatusListener((status) {
@@ -175,26 +172,20 @@ class _MessageViewState extends State<MessageView>
                               leftPadding2,
                               4,
                               leftPadding2,
-                              widget.message.reaction.reactions.isNotEmpty
-                                  ? 14
-                                  : 0,
+                              widget.message.reaction.reactions.isNotEmpty ? 14 : 0,
                             ),
                         child: Transform.scale(
-                          scale: widget.shouldHighlight
-                              ? widget.highlightScale
-                              : 1.0,
+                          scale: widget.shouldHighlight ? widget.highlightScale : 1.0,
                           child: Text(
                             message,
-                            style: emojiMessageConfiguration?.textStyle ??
-                                const TextStyle(fontSize: 30),
+                            style: emojiMessageConfiguration?.textStyle ?? const TextStyle(fontSize: 30),
                           ),
                         ),
                       ),
                       if (widget.message.reaction.reactions.isNotEmpty)
                         ReactionWidget(
                           reaction: widget.message.reaction,
-                          messageReactionConfig:
-                              messageConfig?.messageReactionConfig,
+                          messageReactionConfig: messageConfig?.messageReactionConfig,
                           isMessageBySender: widget.isMessageBySender,
                         ),
                     ],
@@ -210,6 +201,7 @@ class _MessageViewState extends State<MessageView>
                   );
                 } else if (widget.message.messageType.isText) {
                   return TextMessageView(
+                    featureActiveConfig: provide?.featureActiveConfig,
                     inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
                     outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
                     isMessageBySender: widget.isMessageBySender,
@@ -230,8 +222,7 @@ class _MessageViewState extends State<MessageView>
                     inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
                     outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
                   );
-                } else if (widget.message.messageType.isCustom &&
-                    messageConfig?.customMessageBuilder != null) {
+                } else if (widget.message.messageType.isCustom && messageConfig?.customMessageBuilder != null) {
                   return messageConfig?.customMessageBuilder!(widget.message);
                 }
               }()) ??
@@ -240,21 +231,12 @@ class _MessageViewState extends State<MessageView>
             valueListenable: widget.message.statusNotifier,
             builder: (context, value, child) {
               if (widget.isMessageBySender &&
-                  widget.controller?.initialMessageList.last.id ==
-                      widget.message.id &&
+                  widget.controller?.initialMessageList.last.id == widget.message.id &&
                   widget.message.status == MessageStatus.read) {
-                if (ChatViewInheritedWidget.of(context)
-                        ?.featureActiveConfig
-                        .lastSeenAgoBuilderVisibility ??
-                    true) {
-                  return widget.outgoingChatBubbleConfig?.receiptsWidgetConfig
-                          ?.lastSeenAgoBuilder
-                          ?.call(
-                              widget.message,
-                              applicationDateFormatter(
-                                  widget.message.createdAt)) ??
-                      lastSeenAgoBuilder(widget.message,
-                          applicationDateFormatter(widget.message.createdAt));
+                if (ChatViewInheritedWidget.of(context)?.featureActiveConfig.lastSeenAgoBuilderVisibility ?? true) {
+                  return widget.outgoingChatBubbleConfig?.receiptsWidgetConfig?.lastSeenAgoBuilder
+                          ?.call(widget.message, applicationDateFormatter(widget.message.createdAt)) ??
+                      lastSeenAgoBuilder(widget.message, applicationDateFormatter(widget.message.createdAt));
                 }
                 return const SizedBox();
               }

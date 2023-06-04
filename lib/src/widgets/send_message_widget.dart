@@ -29,6 +29,7 @@ import 'package:chatview/src/widgets/chatui_textfield.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
+import '../extensions/input_text_field_controller.dart';
 import '../utils/constants/constants.dart';
 
 class SendMessageWidget extends StatefulWidget {
@@ -69,7 +70,8 @@ class SendMessageWidget extends StatefulWidget {
 }
 
 class SendMessageWidgetState extends State<SendMessageWidget> {
-  final _textEditingController = TextEditingController();
+  late final TextEditingController _textEditingController;
+
   final ValueNotifier<ReplyMessage> _replyMessage = ValueNotifier(const ReplyMessage());
 
   ReplyMessage get replyMessage => _replyMessage.value;
@@ -86,6 +88,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
     super.didChangeDependencies();
     if (provide != null) {
       currentUser = provide!.currentUser;
+      _textEditingController = provide?.featureActiveConfig.isMarkdownSupported == true ? InputTextFieldController() : TextEditingController();
     }
   }
 

@@ -5,8 +5,8 @@ class Reaction {
   });
 
   factory Reaction.fromJson(Map<String, dynamic> json) => Reaction(
-        reactions: json['reactions'],
-        reactedUserIds: json['reactedUserIds'],
+        reactions: json['reactions'].cast<String>(),
+        reactedUserIds: json['reactedUserIds'].cast<String>(),
       );
 
   /// Provides list of reaction in single message.

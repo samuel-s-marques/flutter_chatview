@@ -197,7 +197,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget> with Tick
                   builder: (context, value, child) => TypingIndicator(
                         typeIndicatorConfig: widget.typeIndicatorConfig,
                         chatBubbleConfig: chatBubbleConfig?.inComingChatBubbleConfig,
-                        showIndicator: value,
+                        showIndicator: value != null,
                         profilePic: profileCircleConfig?.profileImageUrl,
                       )),
           SizedBox(
